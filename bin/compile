@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+cf_buildpacks=("java-buildpack" "nodejs-buildpack")
+
+for BUILDPACK in "${cf_buildpacks[@]}"; do
+  git clone "https://github.com/cloudfoundry/"$BUILDPACK".git" >/dev/null 2>&1
+  cd $BUILDPACK
+  chmod -f +x bin/{detect,compile,release}
+  bin/detect $1
+  bin/compile $1 $2
+  bin/release $1
+done
